@@ -19,28 +19,28 @@ public class MissionController {
     private final MissionService missionService;
 
     @PostMapping
-    public ResponseEntity<MissionResponseDto> createConsultant(@RequestBody MissionRequestDto request) {
+    public ResponseEntity<MissionResponseDto> createMission(@RequestBody MissionRequestDto request) {
         MissionResponseDto response = missionService.createMission(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<MissionResponseDto>> getAllConsultants() {
+    public ResponseEntity<List<MissionResponseDto>> getAllMissions() {
         return ResponseEntity.ok(missionService.getAllMissions());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MissionResponseDto> getConsultantById(@PathVariable UUID id) {
+    public ResponseEntity<MissionResponseDto> getMissionById(@PathVariable UUID id) {
         return ResponseEntity.ok(missionService.getMissionById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MissionResponseDto> updateConsultant(@PathVariable UUID id,@RequestBody MissionRequestDto request) {
+    public ResponseEntity<MissionResponseDto> updateMission(@PathVariable UUID id,@RequestBody MissionRequestDto request) {
         return ResponseEntity.ok(missionService.updateMission(id,request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteConsultant(@PathVariable UUID id ) {
+    public ResponseEntity<Void> deleteMission(@PathVariable UUID id ) {
         missionService.deleteMission(id);
         return ResponseEntity.noContent().build();
     }

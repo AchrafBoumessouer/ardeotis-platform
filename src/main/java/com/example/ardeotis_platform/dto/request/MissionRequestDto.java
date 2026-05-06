@@ -23,7 +23,7 @@ public class MissionRequestDto {
 
     @NotEmpty
     private List<String> skills;
-
+    @NotBlank
     private String status;
 
 
