@@ -4,6 +4,7 @@ import com.example.ardeotis_platform.dto.request.ConsultantRequestDto;
 import com.example.ardeotis_platform.dto.response.ConsultantResponseDto;
 import com.example.ardeotis_platform.service.ConsultantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class ConsultantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ConsultantResponseDto>> getAllConsultants() {
-        return ResponseEntity.ok(consultantService.getAllConsultants());
+    public ResponseEntity<Page<ConsultantResponseDto>> getAllConsultants(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(consultantService.getAllConsultants(page, size));
     }
 
     @GetMapping("/{id}")

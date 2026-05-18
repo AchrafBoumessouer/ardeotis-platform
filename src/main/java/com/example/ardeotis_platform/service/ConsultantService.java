@@ -6,6 +6,9 @@ import com.example.ardeotis_platform.mapper.ConsultantMapper;
 import com.example.ardeotis_platform.model.Consultant;
 import com.example.ardeotis_platform.repository.ConsultantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +26,10 @@ public class ConsultantService {
         return consultantMapper.toResponseDto( savedConsultant );
     }
 
-    public List<ConsultantResponseDto> getAllConsultants(){
-        return consultantRepository.findAll()
-                                   .stream()
-                                   .map(consultantMapper::toResponseDto)
-                                   .toList();
+    public Page<ConsultantResponseDto> getAllConsultants(int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return consultantRepository.findAll(pageable)
+                                   .map(consultantMapper::toResponseDto);
     }
 
     public ConsultantResponseDto getConsultantById(UUID id) {

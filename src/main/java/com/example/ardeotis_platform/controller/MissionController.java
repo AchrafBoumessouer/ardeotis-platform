@@ -4,6 +4,7 @@ import com.example.ardeotis_platform.dto.request.MissionRequestDto;
 import com.example.ardeotis_platform.dto.response.MissionResponseDto;
 import com.example.ardeotis_platform.service.MissionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class MissionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MissionResponseDto>> getAllMissions() {
-        return ResponseEntity.ok(missionService.getAllMissions());
+    public ResponseEntity<Page<MissionResponseDto>> getAllMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(missionService.getAllMissions(page,size));
     }
 
     @GetMapping("/{id}")
