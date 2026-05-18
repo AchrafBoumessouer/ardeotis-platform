@@ -7,7 +7,11 @@ import com.example.ardeotis_platform.mapper.MissionMapper;
 import com.example.ardeotis_platform.model.Mission;
 import com.example.ardeotis_platform.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,11 +29,10 @@ public class MissionService {
         return missionMapper.toResponseDto( savedMission );
     }
 
-    public List<MissionResponseDto> getAllMissions(){
-        return missionRepository.findAll()
-                .stream()
-                .map(missionMapper::toResponseDto)
-                .toList();
+    public Page<MissionResponseDto> getAllMissions(int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return missionRepository.findAll(pageable)
+                .map(missionMapper::toResponseDto);
     }
 
     public MissionResponseDto getMissionById(UUID id) {
