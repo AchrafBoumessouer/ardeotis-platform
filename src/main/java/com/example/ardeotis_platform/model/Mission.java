@@ -29,9 +29,9 @@ public class Mission {
     @Column(nullable = false)
     private Set<String> skills = new HashSet<>();
 
-
-    @Column(nullable = false, length = 30)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MissionStatus status = MissionStatus.ACTIVE;
 
 
     private LocalDate startDate;

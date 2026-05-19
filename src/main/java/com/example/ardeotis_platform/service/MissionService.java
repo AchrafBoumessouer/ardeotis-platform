@@ -5,6 +5,7 @@ import com.example.ardeotis_platform.dto.request.MissionRequestDto;
 import com.example.ardeotis_platform.dto.response.MissionResponseDto;
 import com.example.ardeotis_platform.mapper.MissionMapper;
 import com.example.ardeotis_platform.model.Mission;
+import com.example.ardeotis_platform.model.MissionStatus;
 import com.example.ardeotis_platform.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,13 @@ public class MissionService {
 
     public Page<MissionResponseDto> getAllMissions(int page, int size){
         Pageable pageable = PageRequest.of(page,size);
-        return missionRepository.findAll(pageable)
+        return missionRepository.findByStatus(MissionStatus.ACTIVE,pageable)
+                .map(missionMapper::toResponseDto);
+    }
+
+    public Page<MissionResponseDto> getArchivedMissions(int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return missionRepository.findByStatus(MissionStatus.ARCHIVED,pageable)
                 .map(missionMapper::toResponseDto);
     }
 
@@ -50,6 +57,12 @@ public class MissionService {
     public void deleteMission(UUID id) {
         Mission mission = missionRepository.findById(id).orElseThrow(() -> new RuntimeException("Mission not found "));
         missionRepository.deleteById(id);
+    }
+
+    public void archiveMission(UUID id) {
+        Mission mission = missionRepository.findById(id).orElseThrow(() -> new RuntimeException("Mission not found "));
+        mission.setStatus(MissionStatus.ARCHIVED);
+        missionRepository.save(mission);
     }
 
 

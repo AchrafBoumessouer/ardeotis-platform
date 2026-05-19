@@ -29,6 +29,11 @@ public class MissionController {
     public ResponseEntity<Page<MissionResponseDto>> getAllMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(missionService.getAllMissions(page,size));
     }
+    @GetMapping("/archived")
+    public ResponseEntity<Page<MissionResponseDto>> getArchivedMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(missionService.getArchivedMissions(page,size));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<MissionResponseDto> getMissionById(@PathVariable UUID id) {
@@ -43,6 +48,12 @@ public class MissionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMission(@PathVariable UUID id ) {
         missionService.deleteMission(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/archive")
+    public ResponseEntity<Void> archiveMission(@PathVariable UUID id ) {
+        missionService.archiveMission(id);
         return ResponseEntity.noContent().build();
     }
 }
