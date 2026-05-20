@@ -9,6 +9,7 @@ import com.example.ardeotis_platform.model.MissionStatus;
 import com.example.ardeotis_platform.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,22 @@ public class MissionService {
         return missionMapper.toResponseDto( savedMission );
     }
 
-    public Page<MissionResponseDto> getAllMissions(int page, int size){
+    public Page<MissionResponseDto> getAllMissions(int page, int size, MissionStatus status, String client, String skill){
         Pageable pageable = PageRequest.of(page,size);
-        return missionRepository.findByStatus(MissionStatus.ACTIVE,pageable)
-                .map(missionMapper::toResponseDto);
+         Page<Mission> result= missionRepository.searchMissions(status, normalize(client),pageable);
+         List<MissionResponseDto> xx  = result.getContent().stream().filter(mission -> matchSkill(mission,skill))
+
+                 .map(missionMapper::toResponseDto).toList();
+
+        return new PageImpl<>(xx,pageable,xx.size());
+    }
+    private boolean  matchSkill(Mission m,String s){
+      if(s == null || s.isBlank()) return true;
+      String search = s.trim().toLowerCase();
+      return m.getSkills() != null && m.getSkills().stream().anyMatch(sx -> sx != null && sx.toLowerCase().contains(search));
+    }
+    private String normalize(String value){
+        return value == null || value.isBlank() ? null : value.trim();
     }
 
     public Page<MissionResponseDto> getArchivedMissions(int page, int size){

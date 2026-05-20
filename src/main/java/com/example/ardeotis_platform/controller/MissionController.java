@@ -2,6 +2,7 @@ package com.example.ardeotis_platform.controller;
 
 import com.example.ardeotis_platform.dto.request.MissionRequestDto;
 import com.example.ardeotis_platform.dto.response.MissionResponseDto;
+import com.example.ardeotis_platform.model.MissionStatus;
 import com.example.ardeotis_platform.service.MissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,8 +27,11 @@ public class MissionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<MissionResponseDto>> getAllMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(missionService.getAllMissions(page,size));
+    public ResponseEntity<Page<MissionResponseDto>> getAllMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                                                   @RequestParam(required = false)MissionStatus status,
+                                                                   @RequestParam(required = false)String client,
+                                                                   @RequestParam(required = false)String skill) {
+        return ResponseEntity.ok(missionService.getAllMissions(page,size,status,client,skill));
     }
     @GetMapping("/archived")
     public ResponseEntity<Page<MissionResponseDto>> getArchivedMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
