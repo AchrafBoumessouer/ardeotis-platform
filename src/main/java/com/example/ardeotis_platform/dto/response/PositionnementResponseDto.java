@@ -6,14 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 public class PositionnementResponseDto {
     private Long id;
-    private Long consultantId;
-    private Long missionId;
+    private UUID consultantId;
+    private UUID missionId;
     private PositionnementStatus status;
     private String commentaire;
     private LocalDateTime createdAt;

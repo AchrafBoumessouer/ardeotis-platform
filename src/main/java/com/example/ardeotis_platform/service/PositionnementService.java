@@ -41,7 +41,8 @@ public class PositionnementService {
     }
 
     public PositionnementResponseDto findById(Long id){
-        return mapper.toDto(positionnementRepository.findById(id)).orElseThrow(() -> new RuntimeException(("Positionnement introuvable")));
+        Positionnement p=positionnementRepository.findById(id).orElseThrow(() -> new RuntimeException(("Positionnement introuvable")));
+        return mapper.toDto(p);
 
     }
 
