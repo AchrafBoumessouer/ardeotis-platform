@@ -18,7 +18,7 @@ public class MatchingController {
 
     private final MatchingService matchingService;
 
-    @GetMapping("/missions/{missionId}/consultants")
+    @GetMapping("/missions/{missionId}/matching")
     public List<MatchingResultDto> matchConsultantsToMission(@PathVariable UUID missionId){
         return matchingService.matchConsultantsToMission(missionId);
     }
