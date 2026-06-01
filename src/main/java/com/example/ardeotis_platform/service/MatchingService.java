@@ -33,11 +33,13 @@ public class MatchingService {
         if(cons.getStatus() == ConsultantStatus.AVAILABLE){
             score += 20;
         }
-        if(cons.getStatus() == ConsultantStatus.AVAILABLE){
-            score += 20;
-        }
         score += calculateSkilsScore(mission.getSkills(),cons.getSkills());
-        return null;
+        List<String> matchSkills = mission.getSkills().stream().filter(ms -> cons.getSkills().stream().anyMatch((cs -> cs.equalsIgnoreCase(ms)))).toList();
+        List<String> missingSkills = mission.getSkills().stream().filter(ms -> cons.getSkills().stream().noneMatch((cs -> cs.equalsIgnoreCase(ms)))).toList();
+
+        return MatchingResultDto.builder().consultantId(cons.getID())
+                                          .consultantName(cons.getFirstName() + " "+ cons.getLastName())
+                                          .matchScore(score).matchedSkills(matchSkills).missingSkills(missingSkills).available(cons.getStatus() == ConsultantStatus.AVAILABLE).build();
     }
 
     private int calculateSkilsScore(Set<String> missionSkills, Set<String> consultantSkills){
