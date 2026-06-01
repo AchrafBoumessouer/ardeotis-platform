@@ -26,7 +26,9 @@ public class Mission {
     @Column(nullable = false, length = 100)
     private String client;
 
-    @Column(nullable = false)
+    @ElementCollection
+    @CollectionTable(name = "mission_skills", joinColumns = @JoinColumn(name = "mission_id"))
+    @Column(name = "skill")
     private Set<String> skills = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
