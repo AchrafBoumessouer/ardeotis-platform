@@ -1,5 +1,6 @@
 package com.example.ardeotis_platform.dto.response;
 
+import com.example.ardeotis_platform.model.PositionnementStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,7 @@ public class MatchingResultDto {
     private Integer matchScore;
     private List<String> matchedSkills;
     private List<String> missingSkills;
+    private Long positionnementId;
+    private PositionnementStatus status;
     private Boolean available;
 }
