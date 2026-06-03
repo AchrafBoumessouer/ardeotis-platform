@@ -1,14 +1,14 @@
 package com.example.ardeotis_platform.service;
 
 import com.example.ardeotis_platform.dto.response.MatchingResultDto;
-import com.example.ardeotis_platform.model.Consultant;
-import com.example.ardeotis_platform.model.ConsultantStatus;
-import com.example.ardeotis_platform.model.Mission;
+import com.example.ardeotis_platform.model.*;
 import com.example.ardeotis_platform.repository.ConsultantRepository;
 import com.example.ardeotis_platform.repository.MissionRepository;
+import com.example.ardeotis_platform.repository.PositionnementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +19,7 @@ import java.util.UUID;
 public class MatchingService {
     private final ConsultantRepository consultantRepository;
     private final MissionRepository missionRepository;
+    private final PositionnementRepository positionnementRepository;
 
     public List<MatchingResultDto> matchConsultantsToMission (UUID missionId) {
         Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new RuntimeException("Mission not found"));
@@ -36,9 +37,13 @@ public class MatchingService {
         score += calculateSkilsScore(mission.getSkills(),cons.getSkills());
         List<String> matchSkills = mission.getSkills().stream().filter(ms -> cons.getSkills().stream().anyMatch((cs -> cs.equalsIgnoreCase(ms)))).toList();
         List<String> missingSkills = mission.getSkills().stream().filter(ms -> cons.getSkills().stream().noneMatch((cs -> cs.equalsIgnoreCase(ms)))).toList();
-
+        Positionnement posi = positionnementRepository.findByMissionIDAndConsultantID(mission.getID(),cons.getID()).orElseGet(() ->  positionnementRepository.save(
+                Positionnement.builder().consultant(cons).mission(mission).status(PositionnementStatus.INTERET_EXPRIME).lastStatusUpdateAt(LocalDateTime.now()).build()
+        ));
         return MatchingResultDto.builder().consultantId(cons.getID())
                                           .consultantName(cons.getFirstName() + " "+ cons.getLastName())
+                                          .positionnementId( posi.getId())
+                                          .status( posi.getStatus()  )
                                           .matchScore(score).matchedSkills(matchSkills).missingSkills(missingSkills).available(cons.getStatus() == ConsultantStatus.AVAILABLE).build();
     }
 
