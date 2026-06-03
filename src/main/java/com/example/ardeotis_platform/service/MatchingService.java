@@ -8,6 +8,7 @@ import com.example.ardeotis_platform.repository.PositionnementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -36,11 +37,13 @@ public class MatchingService {
         score += calculateSkilsScore(mission.getSkills(),cons.getSkills());
         List<String> matchSkills = mission.getSkills().stream().filter(ms -> cons.getSkills().stream().anyMatch((cs -> cs.equalsIgnoreCase(ms)))).toList();
         List<String> missingSkills = mission.getSkills().stream().filter(ms -> cons.getSkills().stream().noneMatch((cs -> cs.equalsIgnoreCase(ms)))).toList();
-        Positionnement posi = positionnementRepository.findByMissionAndConsultant(mission,cons).orElse(null);
+        Positionnement posi = positionnementRepository.findByMissionIDAndConsultantID(mission.getID(),cons.getID()).orElseGet(() ->  positionnementRepository.save(
+                Positionnement.builder().consultant(cons).mission(mission).status(PositionnementStatus.INTERET_EXPRIME).lastStatusUpdateAt(LocalDateTime.now()).build()
+        ));
         return MatchingResultDto.builder().consultantId(cons.getID())
                                           .consultantName(cons.getFirstName() + " "+ cons.getLastName())
-                                          .positionnementId(posi != null ? posi.getId() : null)
-                                          .status(posi != null ? posi.getStatus() : PositionnementStatus.INTERET_EXPRIME )
+                                          .positionnementId( posi.getId())
+                                          .status( posi.getStatus()  )
                                           .matchScore(score).matchedSkills(matchSkills).missingSkills(missingSkills).available(cons.getStatus() == ConsultantStatus.AVAILABLE).build();
     }
 
