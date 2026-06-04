@@ -1,6 +1,7 @@
 package com.example.ardeotis_platform.service;
 
 import com.example.ardeotis_platform.dto.request.UpdatePositionnementStatusRequest;
+import com.example.ardeotis_platform.dto.response.HistoriquePositionnementResponseDto;
 import com.example.ardeotis_platform.exception.BusinessException;
 import com.example.ardeotis_platform.model.HistoriquePositionnement;
 import com.example.ardeotis_platform.model.Positionnement;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,5 +47,10 @@ public class PositionnementService {
                 .build();
         historiquePositionRepository.save(historiquePositionnement);
         return x;
+    }
+
+    public List<HistoriquePositionnementResponseDto> getHistorique(Long id) {
+        return historiquePositionRepository.findByPositionnementIdOrderByLastStatusUpdatedAtDesc(id).stream()
+                                           .map(h -> new HistoriquePositionnementResponseDto(h.getId(),h.getAncienStatus(),h.getNewStatus(),h.getLastStatusUpdateAt(), h.getCommentaire())).toList();
     }
 }
