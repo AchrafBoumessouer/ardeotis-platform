@@ -20,6 +20,10 @@ public class PositionnementController {
 
     private final PositionnementService positionnementService;
 
+    @GetMapping()
+    public ResponseEntity<List<Positionnement>> getAllPosition() {
+        return ResponseEntity.ok(positionnementService.getHistorique());
+    }
 
     @PutMapping("/{id}/status")
     public ResponseEntity<Positionnement> updateStatus(@PathVariable Long id, @RequestBody UpdatePositionnementStatusRequest request) {
