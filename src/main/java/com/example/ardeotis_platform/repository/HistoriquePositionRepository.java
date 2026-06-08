@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface HistoriquePositionRepository extends JpaRepository<HistoriquePositionnement,Long> {
-List<HistoriquePositionnement> findByPositionnementIdOrderByLastStatusUpdatedAtDesc(Long positionnementId);
+List<HistoriquePositionnement> findByPositionnementIdOrderByLastStatusUpdateAtDesc(Long positionnementId);
 }

@@ -50,7 +50,12 @@ public class PositionnementService {
     }
 
     public List<HistoriquePositionnementResponseDto> getHistorique(Long id) {
-        return historiquePositionRepository.findByPositionnementIdOrderByLastStatusUpdatedAtDesc(id).stream()
+        return historiquePositionRepository.findByPositionnementIdOrderByLastStatusUpdateAtDesc(id).stream()
                                            .map(h -> new HistoriquePositionnementResponseDto(h.getId(),h.getAncienStatus(),h.getNewStatus(),h.getLastStatusUpdateAt(), h.getCommentaire())).toList();
+    }
+
+    public List<Positionnement> getHistorique() {
+        return positionnementRepository.findAll().stream()
+                .toList();
     }
 }
