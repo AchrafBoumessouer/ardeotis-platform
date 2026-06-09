@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface MissionRepository extends JpaRepository<Mission, UUID> {
     Page<Mission> findByStatus(MissionStatus status, Pageable pageable);
 
-    @Query("select m.status, count(m) from mission m group by m.status")
+    @Query("select m.status, count(m) from Mission m group by m.status")
     List<Object[]> countByStats();
 
 }
