@@ -49,13 +49,15 @@ public class PositionnementService {
         return x;
     }
 
-    public List<HistoriquePositionnementResponseDto> getHistorique(Long id) {
+    public List<HistoriquePositionnementResponseDto> getHistoriqueLastPositions(Long id) {
         return historiquePositionRepository.findByPositionnementIdOrderByLastStatusUpdateAtDesc(id).stream()
                                            .map(h -> new HistoriquePositionnementResponseDto(h.getId(),h.getAncienStatus(),h.getNewStatus(),h.getLastStatusUpdateAt(), h.getCommentaire())).toList();
     }
 
-    public List<Positionnement> getHistorique() {
+    public List<Positionnement> getHistoriquePositions() {
         return positionnementRepository.findAll().stream()
                 .toList();
     }
 }
+
+

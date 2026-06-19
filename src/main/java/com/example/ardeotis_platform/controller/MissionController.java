@@ -27,7 +27,7 @@ public class MissionController {
 
     @GetMapping
     public ResponseEntity<Page<MissionResponseDto>> getAllMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(missionService.getAllMissions(page,size));
+        return ResponseEntity.ok(missionService.getAllActiveMissions(page,size));
     }
     @GetMapping("/archived")
     public ResponseEntity<Page<MissionResponseDto>> getArchivedMissions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
