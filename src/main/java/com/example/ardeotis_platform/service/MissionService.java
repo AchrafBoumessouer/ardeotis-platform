@@ -12,9 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+
 import java.util.UUID;
 
 
@@ -30,7 +29,7 @@ public class MissionService {
         return missionMapper.toResponseDto( savedMission );
     }
 
-    public Page<MissionResponseDto> getAllMissions(int page, int size){
+    public Page<MissionResponseDto> getAllActiveMissions(int page, int size){
         Pageable pageable = PageRequest.of(page,size);
         return missionRepository.findByStatus(MissionStatus.ACTIVE,pageable)
                 .map(missionMapper::toResponseDto);

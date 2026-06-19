@@ -22,7 +22,7 @@ public class PositionnementController {
 
     @GetMapping()
     public ResponseEntity<List<Positionnement>> getAllPosition() {
-        return ResponseEntity.ok(positionnementService.getHistorique());
+        return ResponseEntity.ok(positionnementService.getHistoriquePositions());
     }
 
     @PutMapping("/{id}/status")
@@ -32,7 +32,7 @@ public class PositionnementController {
 
     @GetMapping("/{id}/historique")
     public ResponseEntity<List<HistoriquePositionnementResponseDto>> getHistorique(@PathVariable Long id) {
-        return ResponseEntity.ok(positionnementService.getHistorique(id));
+        return ResponseEntity.ok(positionnementService.getHistoriqueLastPositions(id));
     }
 
 
