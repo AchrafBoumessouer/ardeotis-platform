@@ -12,8 +12,6 @@ import java.util.UUID;
 
 public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
 
-    Optional<Consultant> findByEmail(String email);
-    boolean existsByEmail(String email);
     List<Consultant> findByStatus(ConsultantStatus status);
 
     @Query("select c.status, count(c) from Consultant c group by c.status")
