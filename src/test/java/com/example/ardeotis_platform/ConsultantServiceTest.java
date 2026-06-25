@@ -41,12 +41,12 @@ public class ConsultantServiceTest {
      Consultant cons = new Consultant();
      Consultant saved = new Consultant();
      ConsultantResponseDto resp = new ConsultantResponseDto();
-     when(consultantMapper.toEntity(req));
-     when(consultantRepository.save(cons));
-     when(consultantMapper.toResponseDto(saved));
+     when(consultantMapper.toEntity(req)).thenReturn(cons);
+     when(consultantRepository.save(cons)).thenReturn(saved);
+     when(consultantMapper.toResponseDto(saved)).thenReturn(resp);
 
      ConsultantResponseDto res = consultantService.createConsultant(req);
-     assertThat(res).isEqualTo(res);
+     assertThat(res).isEqualTo(resp);
  }
 
  @Test
